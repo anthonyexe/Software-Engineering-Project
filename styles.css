@@ -1,0 +1,67 @@
+* {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color:beige;
+}
+
+h1 {
+    background-color:aliceblue;
+}
+
+hr {
+    color: black;
+    margin: auto;
+    border-radius:5px;
+}
+
+a:hover {
+    color:cadetblue;
+    text-decoration: underline;
+}
+
+a:visited {
+    
+}
+
+a:link {
+    text-decoration: none;
+}
+
+img {
+    mix-blend-mode: multiply;
+}
+img:hover {
+    transform:scale(1.2);
+}
+
+button {
+    border-color:black;
+    background-color:deepskyblue;
+    padding: 10px 10px;
+    margin: 15px;
+}
+
+button:hover {
+    background-color:dodgerblue;
+    transform:scale(1.1);
+}
+.header {
+    background-color:beige;
+    font-size: 60px;
+    font-weight: bolder;
+    margin: auto;
+}
+
+.links {
+    margin: auto;
+    font-size: 20px;
+    font-weight:bold;
+}
+
+.registerForm {
+    margin: auto;
+    font-size: 20px;
+    font-weight: bold;
+}

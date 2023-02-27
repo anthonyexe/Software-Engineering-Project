@@ -2,8 +2,17 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#logo {
+    position:fixed;
+    top:0;
+    left:0;
+    mix-blend-mode: multiply;
+}
+
 body {
     background-color:beige;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minman(150px, 1fr));
 }
 
 h1 {
@@ -17,12 +26,12 @@ hr {
 }
 
 a:hover {
-    color:cadetblue;
-    text-decoration: underline;
+    display:inline-block;
+    text-decoration: underline !important;
 }
 
-a:visited {
-    
+a:link, a:visited {
+    color:cornflowerblue;
 }
 
 a:link {

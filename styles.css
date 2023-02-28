@@ -57,17 +57,24 @@ button:hover {
     transform:scale(1.1);
 }
 
+table {
+    border: 1px solid #ccc;
+}
 tr {
     text-align:center;
+    border: 1px solid #ccc;
 }
 
 td {
+    font-weight:lighter;
     text-align:center;
     padding: 5px;
+    border: 1px solid #ccc;
 }
 
 th {
     padding: 5px;
+    border: 1px solid #ccc;
 }
 .header {
     background-color:beige;

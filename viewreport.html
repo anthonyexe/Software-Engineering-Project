@@ -2,12 +2,12 @@
 
 <head>
     <title>View Reports - A Brush Up</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
     <div id="logo">
-        <a href="home.html"><img src="C:\Users\antho\Desktop\_College\2023\Spring Semester\Software Engineering\A Brush Up Internal Management System\paintbrush.png" 
+        <<a href="{{ url_for('home') }}"><img src="C:\Users\antho\Desktop\_College\2023\Spring Semester\Software Engineering\A Brush Up Internal Management System\paintbrush.png"
             alt="Logo" style="width:70px;height:70px;"></a>
     </div>
     <section class="header">
@@ -19,19 +19,33 @@
     <section class="report">
         <center>
             <p>Job Report</p>
-            <table>
+            <table border = 20 >
+
+
+
+                {% for jobreport in userDetails %}
                 <tr>
+                    <th>Job Id       </th>
                     <th>Customer Name</th>
                     <th>Customer Address</th>
-                    <th>Job Description</th>
-                    <th>Proposed Cost</th>
+                     <th>Proposed Cost</th>
                 </tr>
                 <tr>
-                    <td>name</td>
-                    <td>address</td>
-                    <td>desc</td>
-                    <td>cost</td>
+                    <td> {{jobreport[0]}} </td>
+                    <td> {{jobreport[1]}} </td>
+                    <td> {{jobreport[2]}} </td>
+                    <td> {{jobreport[4]}} $</td>
                 </tr>
+
+                <tr>
+                    <th colspan = 4 >Job Description</th>
+                </tr>
+
+                <tr>
+                    <td colspan = 4> {{jobreport[3]}} </td>
+                </tr>
+                {% endfor %}
+
             </table>
         </center>
     </section>

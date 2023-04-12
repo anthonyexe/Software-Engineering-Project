@@ -43,7 +43,7 @@ def login():
         #Job_title = request.form['Job_title']
     # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM User WHERE username = %s AND password = %s', (username, password))
+        cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
 
 
 
@@ -61,7 +61,7 @@ def login():
             session['loggedin'] = True
             session['ID'] = account['ID']
             session['username'] = account['username']
-            session['jobSelect'] = account2['Job_title']
+            session['jobSelect'] = account2['job_title']
             # Redirect to home page
             if session['jobSelect'] == 'Painter':
                 return redirect(url_for('home'))
@@ -96,16 +96,20 @@ def register():
         security_question_two = regDetails['answer2']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO User(username, password, security_question_one, security_question_two) VALUES(%s, %s, %s, %s)" , (username, password, security_question_one, security_question_two))
+        cur.execute("INSERT INTO user(username, password, security_question_one, security_question_two) VALUES(%s, %s, %s, %s)" , (username, password, security_question_one, security_question_two))
         mysql.connection.commit()
+        cur.execute("SELECT MAX(ID) FROM user")
+        userID = cur.fetchone()
+        ID = ''
+        for item in userID:
+            ID = ID + str(item)
         cur.close()
-        return render_template('employeeRegister.html')
+        return render_template('employeeRegister.html', ID=ID)
     return render_template('register.html')
 
 #adding this
 @app.route('/employeeRegister', methods =['GET', 'POST'])
 def employeeRegister():
-
 
     if request.method == 'POST':
         # fetch form data
@@ -140,13 +144,13 @@ def home():
 
 
 @app.route('/profile')
-def profile(self):
+def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
 
         # We need all the account info for the user so we can display it on the profile page
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM User WHERE ID = %s', (session['ID'],))
+        cursor.execute('SELECT * FROM user WHERE ID = %s', (session['ID'],))
         account = cursor.fetchone()
         cursor.execute('SELECT * FROM employees WHERE ID = %s', (session['ID'],))
         account2 = cursor.fetchone()

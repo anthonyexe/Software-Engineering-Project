@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<head>
+    <title>View Performance Report - A Brush Up</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+
+    </div>
+    <section class="header">
+        <h2 class = "header"><center>View Performance Report</center></h2>
+        <br>
+        <hr>
+    </section>
+
+    <section class="report">
+        <center>
+            <table border = 10 >
+
+
+
+                {% for performanceReport in results %}
+                <tr>
+                    <th>Job Id       </th>
+                    <th>Customer Name</th>
+                    <th>Customer Address</th>
+                     <th>Proposed Cost</th>
+                </tr>
+                <tr>
+                    <td> {{performanceReport[0]}} </td>
+                    <td> {{performanceReport[1]}} </td>
+                    <td> {{performanceReport[2]}} </td>
+                    <td> $ {{performanceReport[4]}} </td>
+                </tr>
+
+                <tr>
+                    <th colspan = 4 >Job Description</th>
+                </tr>
+
+                <tr>
+                    <td colspan = 4> {{performanceReport[3]}} </td>
+                </tr>
+                {% endfor %}
+
+                </table>
+        </center>
+    </section>
+{% endblock %}
+</body>
+</html>

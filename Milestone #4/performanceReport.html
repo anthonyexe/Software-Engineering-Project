@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Performance Reports</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+{% extends 'layoutAdmin.html' %}
+{% block content %}
+    <br>
+    <center><form>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required>
+        <br><br>
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required><br><br>
+        <button style="color:black;"title="View Performance Report" type="submit" data-view-component="true" value="Report" >View Performance Report</button>
+    </form></center>
+{% endblock %}
+</body>
+</html>

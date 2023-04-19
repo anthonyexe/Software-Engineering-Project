@@ -61,10 +61,6 @@ def login():
             session['username'] = account['username']
             session['jobSelect'] = account2['job_title']
             # Redirect to home page
-            if session['jobSelect'] == 'Painter':
-                return redirect(url_for('home'))
-            elif session['jobSelect'] == "System Admin/Owner" or session['jobSelect'] == "Sr.Painter/Manager":
-                return render_template('homeAdmin.html')
             return redirect(url_for('home'))
         else:
             # Account doesnt exist or username/password incorrect
@@ -170,7 +166,9 @@ def profile():
 def jobreport():
     if request.method == 'POST':
         #fetch form data
+        cur = mysql.connection.cursor()
         userDetails = request.form
+        ID = session['ID']
         customer_name = userDetails['custName']
         Customer_address = userDetails['address']
         Job_description = userDetails['jobDesc']
@@ -180,8 +178,8 @@ def jobreport():
         jobDate = datetime.datetime.strptime(compDate, '%Y-%m-%d')
         #now need to connect it to database and store it
 
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO jobreport(customer_name, Customer_address,Job_description,jobCost, jobDate) VALUES(%s, %s, %s, %s, %s)" , ( customer_name, Customer_address,Job_description,jobCost, jobDate))
+
+        cur.execute("INSERT INTO jobreport(ID, customer_name, Customer_address,Job_description,jobCost, jobDate) VALUES(%s, %s, %s, %s, %s, %s)" , (ID, customer_name, Customer_address,Job_description,jobCost, jobDate))
         mysql.connection.commit()
         cur.close()
         return render_template('reportSucess.html')
@@ -290,11 +288,14 @@ def performanceReport():
         startDate = datetime.datetime.strptime(sDate, '%Y-%m-%d')
         endDate = datetime.datetime.strptime(eDate, '%Y-%m-%d')
 
-        resultValue = cur.execute("SELECT * FROM jobreport WHERE jobDate BETWEEN str_to_date(%s, '%Y-%m-%d') AND str_to_date(%s, '%Y-%m-%d')", (startDate, endDate))
+        resultValue = cur.execute("SELECT * FROM jobreport WHERE jobDate BETWEEN %s AND %s", (startDate, endDate))
 
-        if resultValue >= 0:
+        if resultValue > 0:
             results = cur.fetchall()
-            return render_template('viewPerformanceReport.html', results=results)
+            sum = 0
+            for row in results:
+                sum += row[5]
+            return render_template('performanceReport.html', results=results, sum=sum, sDate=sDate, eDate=eDate)
     return render_template('performanceReport.html')
 
 if __name__ == '__main__':

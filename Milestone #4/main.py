@@ -304,7 +304,7 @@ def performanceReport():
                 tempResults = cur.fetchall()
                 if tempResults:
                     results2.append(tempResults[0])
-                    
+
             listResults2 = [list(i) for i in results2]
 
 
@@ -315,7 +315,16 @@ def performanceReport():
                             if listResults[i][0] == listResults2[k][1]:
                                 listResults[i] = listResults[i] + listResults2[k]
 
-            return render_template('performanceReport.html', listResults=listResults, results=results, controlLoop=controlLoop, results2=results2, sum=sum, sDate=sDate, eDate=eDate)
+            materialsSum = 0
+            laborSum = 0
+            for row in listResults:
+                if len(row) > 7:
+                    materialsSum += row[10]
+                    laborSum += row[11]
+
+            resultsLength = len(listResults)
+
+            return render_template('performanceReport.html', listResults=listResults, resultsLength=resultsLength, results=results, controlLoop=controlLoop, results2=results2, sum=sum, materialsSum=materialsSum, laborSum=laborSum, sDate=sDate, eDate=eDate)
     return render_template('performanceReport.html')
 
 if __name__ == '__main__':

@@ -65,14 +65,35 @@
                     <td colspan = 7> Test Row </td>
                 </tr>
                 {% endfor %}
-                <tr>
+                </table>
+                <table border = 10>
+                    <tr>
                     <th colspan = 7 >Total Cost</th>
                 </tr>
                 <tr>
                     <td colspan = 7> ${{sum}} </td>
                 </tr>
+                <tr>
+                    <th colspan = 7 >Total Materials Cost</th>
+                </tr>
+                <tr>
+                    <td colspan = 7> ${{materialsSum}} </td>
+                </tr>
+                <tr>
+                    <th colspan = 7 >Total Labor Cost</th>
+                </tr>
+                <tr>
+                    <td colspan = 7> ${{laborSum}} </td>
+                </tr>
                 </table>
             <br><br>
+            <!-- {% if loop.index == loop.length %}
+            <table>
+                <tr>
+                    <td>If Statement Success</td>
+                </tr>
+            </table>
+            {% endif %} -->
         </center>
     </section>
 {% endfor %}

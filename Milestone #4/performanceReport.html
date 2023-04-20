@@ -18,17 +18,21 @@
         <button style="color:black;"title="View Performance Report" type="submit" data-view-component="true" value="Report" >View Performance Report</button>
     </form></center>
 
+    {% for count in controlLoop %}
     <section class="report">
         <center>
             <br><br>
             <h2 class="content">Job Reports from {{sDate}} to {{eDate}}</h2>
+            <br>
             <table border = 10 >
-                {% for performance in results %}
+                {% for performance in listResults %}
                 <tr>
                     <th>Job Id       </th>
                     <th>Customer Name</th>
                     <th>Customer Address</th>
                     <th>Proposed Cost</th>
+                    <th>Materials Cost</th>
+                    <th>Labor Cost</th>
                     <th>Estimated Date of Completion</th>
                 </tr>
                 <tr>
@@ -36,26 +40,42 @@
                     <td> {{performance[2]}} </td>
                     <td> {{performance[3]}} </td>
                     <td> ${{performance[5]}} </td>
+                    <td> ${{performance[10]}}</td>
+                    <td> ${{performance[11]}}</td>
                     <td> {{performance[6]}}</td>
                 </tr>
 
                 <tr>
-                    <th colspan = 5 >Job Description</th>
+                    <th colspan = 7 >Job Description</th>
                 </tr>
 
                 <tr>
-                    <td colspan = 5> {{performance[4]}} </td>
+                    <td colspan = 7> {{performance[4]}} </td>
+                </tr>
+
+                <tr>
+                    <th colspan = 7 >Services Completed</th>
+                </tr>
+
+                <tr>
+                    <td colspan = 7> {{performance[9]}} </td>
+                </tr>
+
+                <tr>
+                    <td colspan = 7> Test Row </td>
                 </tr>
                 {% endfor %}
                 <tr>
-                    <th colspan = 5 >Total Cost</th>
+                    <th colspan = 7 >Total Cost</th>
                 </tr>
                 <tr>
-                    <td colspan = 5> ${{sum}} </td>
+                    <td colspan = 7> ${{sum}} </td>
                 </tr>
                 </table>
+            <br><br>
         </center>
     </section>
+{% endfor %}
 {% endblock %}
 </body>
 </html>

@@ -207,6 +207,7 @@ def invoice():
 @app.route('/viewreport', methods=['GET', 'POST'])
 def viewreport():
     if request.method == 'POST':
+        controlLoop = [1]
         userDetails = request.form
         jobid = userDetails['jobid']
 
@@ -214,12 +215,13 @@ def viewreport():
         resultValue = cur.execute("SELECT * FROM jobreport WHERE jobid = %s", [jobid])
         if resultValue > 0:
             userDetails3 = cur.fetchall()
-            return render_template('viewreport.html', userDetails=userDetails3)
+            return render_template('viewreport.html', userDetails=userDetails3, controlLoop=controlLoop)
     return render_template('viewreport.html')
 #this is the search one
 @app.route('/viewInvoice', methods=['GET', 'POST'])
 def viewInvoice():
     if request.method == 'POST':
+        controlLoop = [1]
         userDetails = request.form
         jobid = userDetails['jobid']
 
@@ -227,7 +229,7 @@ def viewInvoice():
         resultValue = cur.execute("SELECT * FROM jobinvoice WHERE jobid = %s", [jobid])
         if resultValue > 0:
             userDetails2 = cur.fetchall()
-            return render_template('viewInvoice.html', userDetails=userDetails2)
+            return render_template('viewInvoice.html', userDetails=userDetails2, controlLoop=controlLoop)
     return render_template('viewInvoice.html')
 
 @app.route('/reportSucess')
@@ -289,13 +291,31 @@ def performanceReport():
         endDate = datetime.datetime.strptime(eDate, '%Y-%m-%d')
 
         resultValue = cur.execute("SELECT * FROM jobreport WHERE jobDate BETWEEN %s AND %s", (startDate, endDate))
-
+        controlLoop = [1]
         if resultValue > 0:
             results = cur.fetchall()
+            listResults = [list(i) for i in results]
+
+            results2 = []
             sum = 0
             for row in results:
                 sum += row[5]
-            return render_template('performanceReport.html', results=results, sum=sum, sDate=sDate, eDate=eDate)
+                cur.execute("SELECT * FROM jobinvoice WHERE jobid = %s", [row[0]])
+                tempResults = cur.fetchall()
+                if tempResults:
+                    results2.append(tempResults[0])
+                    
+            listResults2 = [list(i) for i in results2]
+
+
+            for i in range(len(listResults)):
+                #for j in range(len(i)):
+                    for k in range(len(listResults2)):
+                       # for m in range(len(k)):
+                            if listResults[i][0] == listResults2[k][1]:
+                                listResults[i] = listResults[i] + listResults2[k]
+
+            return render_template('performanceReport.html', listResults=listResults, results=results, controlLoop=controlLoop, results2=results2, sum=sum, sDate=sDate, eDate=eDate)
     return render_template('performanceReport.html')
 
 if __name__ == '__main__':

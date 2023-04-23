@@ -13,33 +13,26 @@
 
 {% block content %}
 
-
-
-
-
-
-
-    </div>
-        <section class="header">
-            <h2 class = "header"><center>View All Invoices</center></h2>
-            <br>
-            <hr>
-        </section>
-
+<section>
+    <center>
+        <h2 class="content">View All Invoices</h2>
+        <br>
+    </center>
+</section>
 
  <section class="report">
         <center>
-            <table border = 10 >
-
-
-
                 {% for jobInvoice in userDetails %}
+            <table class="tableStyle">
+                <thead>
                 <tr>
                     <th>Job Id</th>
                     <th>Cost of Materials</th>
                     <th>Cost of Labor</th>
                     <th>Total Cost</th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr>
                     <td> {{jobInvoice[1]}} </td>
                     <td> ${{jobInvoice[3]}} </td>
@@ -54,9 +47,11 @@
                 <tr>
                     <td colspan = 4> {{jobInvoice[2]}} </td>
                 </tr>
+                </tbody>
+            </table>
                 {% endfor %}
 
-                </table>
+
         </center>
     </section>
 {% endblock %}

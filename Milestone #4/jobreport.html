@@ -13,13 +13,15 @@
 
 <body>
 
-    <section class="header">
-        <h1 class = "header"><center>Create New Job Report</center></h1>
+    <section>
+        <center>
+        <h2 class="content">Create New Job Report</h2>
         <br>
-        <hr>
+        </center>
     </section>
 
     <section class="report">
+        <div style="background-color: white; padding-top: 30px; padding-bottom: 30px;">
         <form method ="POST" action = "">
             <center>
                 <label for="custName">Customer Name:</label><br>
@@ -34,9 +36,10 @@
 
                 <label for="compDate">Estimated Date of Completion:</label>
                 <input type="date" id="compDate" name="compDate" required><br><br>
-                <button style="color:black;"title="Create Job Report" type="submit" data-view-component="true">Create Job Report</button>
+                <button class="button"title="Create Job Report" type="submit" data-view-component="true">Create Job Report</button>
             </center>
         </form>
+        </div>
     </section>
 </body>
 

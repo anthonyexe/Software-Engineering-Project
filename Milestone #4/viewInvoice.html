@@ -15,38 +15,43 @@
 
 
 
-    </div>
-    <section class="header">
-        <h2 class = "header"><center>View Invoice</center></h2>
+    <section>
+        <center>
+        <h2 class="content">Search for an Invoice</h2>
         <br>
-        <hr>
+        </center>
     </section>
 
     <section>
         <form method = "POST" action = "{{ url_for('viewInvoice') }}">
             <center>
                 <label for="jobid">Job ID:</label>
-                <input type="text" name="jobid" placeholder="Job ID" id="jobid" required><br>
-                <button style="color:black;"title="View Invoice" type="submit" data-view-component="true" value="View Invoice" >View Invoice</button>
+                <input type="text" name="jobid" placeholder="Job ID" id="jobid" required><br><br>
+                <button class="button"title="View Invoice" type="submit" data-view-component="true" value="View Invoice" >View Invoice</button>
             </center>
         </form>
-
+        <center>
+            <h2 class="content">{{msg}}</h2>
+        </center>
     </section>
 
     {% for count in controlLoop %}
     <section class="report">
         <center>
-            <table border = 10 >
+            <table class="tableStyle">
 
 
 
                 {% for jobInvoice in userDetails %}
+                <thead>
                 <tr>
                     <th>Job Id</th>
                     <th>Cost of Materials</th>
                     <th>Cost of Labor</th>
                     <th>Total Cost</th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr>
                     <td> {{jobInvoice[1]}} </td>
                     <td> ${{jobInvoice[3]}} </td>
@@ -61,6 +66,7 @@
                 <tr>
                     <td colspan = 4> {{jobInvoice[2]}} </td>
                 </tr>
+                </tbody>
                 {% endfor %}
 
                 </table>

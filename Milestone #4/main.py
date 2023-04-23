@@ -68,6 +68,7 @@ def login():
 
             # Show the login form with message (if any)
         return render_template('index.html', msg=msg)
+    return render_template('index.html')
 
 @app.route('/logout')
 def logout():
@@ -189,19 +190,30 @@ def jobreport():
 @app.route('/invoice', methods=['GET', 'POST'])
 def invoice():
     if request.method == 'POST':
+        cur = mysql.connection.cursor()
         userDetails = request.form
         jobid = userDetails['jobid']
         services_description = userDetails['services']
-        materials_cost = userDetails['mcost']
-        labor_cost = userDetails['lcost']
-        total_cost = userDetails['tcost']
+        materials_cost = int(userDetails['mcost'])
+        labor_cost = int(userDetails['lcost'])
+        total_cost = materials_cost + labor_cost
 
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO jobinvoice(jobid, services_description, materials_cost, labor_cost, total_cost) VALUES(%s, %s, %s, %s, %s)", (jobid, services_description, materials_cost, labor_cost, total_cost))
+
+        cur.execute("UPDATE jobinvoice set services_description = %s, materials_cost = %s, labor_cost = %s, total_cost = %s WHERE jobid = %s", (services_description, materials_cost, labor_cost, total_cost, jobid))
         mysql.connection.commit()
         cur.close()
         return render_template('invoiceSuccess.html')
     return render_template('invoice.html')
+
+@app.route('/jobReportInvoice', methods=['GET', 'POST'])
+def jobReportInvoice():
+    if request.method == 'POST':
+        jobid = request.form['jobid']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO jobinvoice(jobid) VALUE(%s)", [jobid])
+        mysql.connection.commit()
+        return render_template('invoice.html', jobid=jobid)
+
 
 #this is the search one, i edited this
 @app.route('/viewreport', methods=['GET', 'POST'])
@@ -216,6 +228,8 @@ def viewreport():
         if resultValue > 0:
             userDetails3 = cur.fetchall()
             return render_template('viewreport.html', userDetails=userDetails3, controlLoop=controlLoop)
+        msg = "Job Report Does not Exist!"
+        return render_template('viewreport.html', msg=msg)
     return render_template('viewreport.html')
 #this is the search one
 @app.route('/viewInvoice', methods=['GET', 'POST'])
@@ -230,6 +244,8 @@ def viewInvoice():
         if resultValue > 0:
             userDetails2 = cur.fetchall()
             return render_template('viewInvoice.html', userDetails=userDetails2, controlLoop=controlLoop)
+        msg = "Invoice Does not Exist!"
+        return render_template('viewInvoice.html', msg=msg)
     return render_template('viewInvoice.html')
 
 @app.route('/reportSucess')
@@ -325,7 +341,115 @@ def performanceReport():
             resultsLength = len(listResults)
 
             return render_template('performanceReport.html', listResults=listResults, resultsLength=resultsLength, results=results, controlLoop=controlLoop, results2=results2, sum=sum, materialsSum=materialsSum, laborSum=laborSum, sDate=sDate, eDate=eDate)
+        msg = "No Job Reports or Invoices to Generate Performance Reports from!"
+        return render_template('performanceReport.html', msg=msg)
     return render_template('performanceReport.html')
+
+@app.route('/viewEmployees')
+def viewEmployees():
+
+    cur = mysql.connection.cursor()
+    ID = session['ID']
+    resultValue = cur.execute("SELECT * FROM employees WHERE NOT ID = %s", [ID])
+    if resultValue > 0:
+        employeeDetails = cur.fetchall()
+        return render_template('viewEmployees.html', employeeDetails=employeeDetails)
+    else:
+        msg = "No existing employees!"
+
+        return render_template('viewEmployees.html', msg=msg)
+
+@app.route('/editProfile', methods=['GET', 'POST'])
+def editProfile():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM user WHERE ID = %s', (session['ID'],))
+    account = cursor.fetchone()
+    cursor.execute('SELECT * FROM employees WHERE ID = %s', (session['ID'],))
+    account2 = cursor.fetchone()
+
+    if request.method == 'POST':
+        userDetails = request.form;
+
+        if 'username' in userDetails:
+            username = 1
+            return render_template('editProfile.html',account=account, account2=account2, username=username)
+        elif 'email' in userDetails:
+            email = 1
+            return render_template('editProfile.html', account=account, account2=account2, email=email)
+        elif 'phone_number' in userDetails:
+            phone = 1
+            return render_template('editProfile.html', account=account, account2=account2, phone=phone)
+        elif 'password' in userDetails:
+            password = 1
+            return render_template('editProfile.html', account=account, account2=account2, password=password)
+
+        return render_template('profile.html', account=account, account2=account2)
+
+    return render_template('editProfile.html', account=account, account2=account2)
+
+@app.route('/updateProfile', methods=['GET', 'POST'])
+def updateProfile():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute('SELECT * FROM user WHERE ID = %s', (session['ID'],))
+    account = cur.fetchone()
+    cur.execute('SELECT * FROM employees WHERE ID = %s', (session['ID'],))
+    account2 = cur.fetchone()
+
+    if request.method == 'POST':
+        userDetails = request.form;
+        if 'newUsername' in userDetails:
+            username = userDetails['newUsername']
+            ID = userDetails['newUserID']
+            cur.execute('UPDATE user SET username = %s WHERE ID = %s', (username, ID))
+            mysql.connection.commit()
+            cur.close()
+
+            userMsg = "Username Successfully Updated!"
+            return render_template('updateProfileSuccess.html', userMsg=userMsg)
+        elif 'newEmail' in userDetails:
+            email = userDetails['newEmail']
+            ID = userDetails['newEmailID']
+            cur.execute('UPDATE employees SET email = %s WHERE ID = %s', (email, ID))
+            mysql.connection.commit()
+            cur.close
+
+            emailMsg = "Email Successfully Updated!"
+            return render_template('updateProfileSuccess.html', emailMsg=emailMsg)
+        elif 'newPhone' in userDetails:
+            phone_number = userDetails['newPhone']
+            ID = userDetails['newPhoneID']
+            cur.execute('UPDATE employees SET phone_number = %s WHERE ID = %s', (phone_number, ID))
+            mysql.connection.commit()
+            cur.close
+
+            phoneMsg = "Phone Number Successfully Updated!"
+            return render_template('updateProfileSuccess.html', phoneMsg=phoneMsg)
+        elif 'oldPassword' in userDetails:
+            oldPassword = userDetails['oldPassword']
+            ID = userDetails['oldPasswordID']
+            cur.execute("SELECT * FROM user WHERE password = %s AND ID = %s", (oldPassword, ID))
+            results = cur.fetchall()
+            if results:
+                cur.close()
+                password = 2
+                return render_template('editProfile.html', account=account, account2=account2, password=password)
+
+            else:
+                incorrectmsg = "Incorrect Password!"
+                return render_template('editProfile.html', incorrectmsg=incorrectmsg)
+        elif 'newPassword' in userDetails:
+            newPassword = userDetails['newPassword']
+            ID = userDetails['newPasswordID']
+            cur.execute('UPDATE user SET password = %s WHERE ID = %s', (newPassword, ID))
+            mysql.connection.commit()
+            cur.close
+
+            passwordMsg = "Password Successfully Updated!"
+            return render_template('updateProfileSuccess.html', passwordMsg=passwordMsg)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

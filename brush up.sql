@@ -1,3 +1,8 @@
+Drop table user;
+Drop table employees;
+Drop table jobreport;
+Drop table jobinvoice;
+
 
  create table user(
     ID int auto_increment,
@@ -17,12 +22,13 @@
     Middle_initial  varchar(1),
 	last_name varchar(20),
     email varchar(20) not null,
-   Phone_number int(10) not null,
-	Job_title  varchar(20) not null,
+   Phone_number varchar(12) not null,
+	job_title  varchar(20) not null,
     password varchar(20) not null,
 	 constraint employee_PK primary key(employee_id),
      constraint ID foreign key(ID) references user(ID));
       ALTER TABLE employees AUTO_INCREMENT=100;
+
 
 Create Table jobreport(
 jobid int auto_increment,
@@ -38,6 +44,7 @@ constraint ID_FK  foreign key(ID) references User(ID));
 
 
  ALTER TABLE jobreport AUTO_INCREMENT=10001;
+    
 
 
 Create Table jobinvoice(

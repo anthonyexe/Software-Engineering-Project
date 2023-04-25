@@ -71,34 +71,28 @@
                 </table>
                 {% endfor %}
 
-                <table border = 10>
+                <table class="tableStyle">
+                    <thead>
+                        <tr>
+                            <th>Average Materials Cost</th>
+                            <th>Total Materials Cost</th>
+                            <th>Average Labor Cost</th>
+                            <th>Total Labor Cost</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
                     <tr>
-                    <th colspan = 7 >Total Cost</th>
-                </tr>
-                <tr>
-                    <td colspan = 7> ${{sum}} </td>
-                </tr>
-                <tr>
-                    <th colspan = 7 >Total Materials Cost</th>
-                </tr>
-                <tr>
-                    <td colspan = 7> ${{materialsSum}} </td>
-                </tr>
-                <tr>
-                    <th colspan = 7 >Total Labor Cost</th>
-                </tr>
-                <tr>
-                    <td colspan = 7> ${{laborSum}} </td>
-                </tr>
+                        <td style="text-align:center"> ${{averageMaterials}} </td>
+                        <td style="text-align:center"> ${{materialsSum}} </td>
+                        <td style="text-align:center"> ${{averageLabor}} </td>
+                        <td style="text-align:center"> ${{laborSum}} </td>
+                    </tr>
+
+                    </tbody>
+
                 </table>
             <br><br>
-            <!-- {% if loop.index == loop.length %}
-            <table>
-                <tr>
-                    <td>If Statement Success</td>
-                </tr>
-            </table>
-            {% endif %} -->
         </center>
     </section>
 {% endfor %}

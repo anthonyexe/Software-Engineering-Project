@@ -332,15 +332,23 @@ def performanceReport():
                                 listResults[i] = listResults[i] + listResults2[k]
 
             materialsSum = 0
+            materialsCount = 0
             laborSum = 0
+            laborCount = 0
             for row in listResults:
                 if len(row) > 7:
-                    materialsSum += row[10]
-                    laborSum += row[11]
+                    if row[10] > 0:
+                        materialsSum += row[10]
+                        materialsCount += 1
+                    if row[11] > 0:
+                        laborSum += row[11]
+                        laborCount += 1
 
+            averageMaterials = materialsSum / materialsCount
+            averageLabor = laborSum / laborCount
             resultsLength = len(listResults)
 
-            return render_template('performanceReport.html', listResults=listResults, resultsLength=resultsLength, results=results, controlLoop=controlLoop, results2=results2, sum=sum, materialsSum=materialsSum, laborSum=laborSum, sDate=sDate, eDate=eDate)
+            return render_template('performanceReport.html', averageMaterials=averageMaterials, averageLabor=averageLabor, listResults=listResults, resultsLength=resultsLength, results=results, controlLoop=controlLoop, results2=results2, sum=sum, materialsSum=materialsSum, laborSum=laborSum, sDate=sDate, eDate=eDate)
         msg = "No Job Reports or Invoices to Generate Performance Reports from!"
         return render_template('performanceReport.html', msg=msg)
     return render_template('performanceReport.html')
@@ -373,6 +381,15 @@ def editProfile():
         if 'username' in userDetails:
             username = 1
             return render_template('editProfile.html',account=account, account2=account2, username=username)
+        elif 'first_name' in userDetails:
+            first_name = 1
+            return render_template('editProfile.html', account=account, account2=account2, first_name=first_name)
+        elif 'middle_initial' in userDetails:
+            middle_initial = 1
+            return render_template('editProfile.html', account=account, account2=account2, middle_initial=middle_initial)
+        elif 'last_name' in userDetails:
+            last_name = 1
+            return render_template('editProfile.html', account=account, account2=account2, last_name=last_name)
         elif 'email' in userDetails:
             email = 1
             return render_template('editProfile.html', account=account, account2=account2, email=email)
@@ -407,6 +424,33 @@ def updateProfile():
 
             userMsg = "Username Successfully Updated!"
             return render_template('updateProfileSuccess.html', userMsg=userMsg)
+        elif 'newFirstName' in userDetails:
+            first_name = userDetails['newFirstName']
+            ID = userDetails['newfnUserID']
+            cur.execute('UPDATE employees SET first_name = %s WHERE ID = %s', (first_name, ID))
+            mysql.connection.commit()
+            cur.close
+
+            fn = "First Name Successfully Updated!"
+            return render_template('updateProfileSuccess.html', fn=fn)
+        elif 'newMiddleInitial' in userDetails:
+            middle_initial = userDetails['newMiddleInitial']
+            ID = userDetails['newmUserID']
+            cur.execute('UPDATE employees SET middle_initial = %s WHERE ID = %s', (middle_initial, ID))
+            mysql.connection.commit()
+            cur.close
+
+            mi = "Middle Initial Successfully Updated!"
+            return render_template('updateProfileSuccess.html', mi=mi)
+        elif 'newLastName' in userDetails:
+            last_name = userDetails['newLastName']
+            ID = userDetails['newlnUserID']
+            cur.execute('UPDATE employees SET last_name = %s WHERE ID = %s', (last_name, ID))
+            mysql.connection.commit()
+            cur.close
+
+            ln = "Last Name Successfully Updated!"
+            return render_template('updateProfileSuccess.html', ln=ln)
         elif 'newEmail' in userDetails:
             email = userDetails['newEmail']
             ID = userDetails['newEmailID']
@@ -447,9 +491,6 @@ def updateProfile():
 
             passwordMsg = "Password Successfully Updated!"
             return render_template('updateProfileSuccess.html', passwordMsg=passwordMsg)
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

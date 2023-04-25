@@ -30,6 +30,69 @@
     <p>Your account details are below:</p>
     <table>
         <tr>
+            <td>First Name:</td>
+            <td>{{ account2['first_name'] }}</td>
+            <td>
+                <form method="POST" action="{{url_for('editProfile')}}">
+                    <input type="hidden" id="first_name" name="first_name" value="{{account2['first_name']}}">
+                    <input type="hidden" id="fnuserID" name="fnuserID" value="{{account['ID']}}">
+                    <input class="submit" type="submit" value="Change First Name">
+                </form>
+            </td>
+            {% if first_name == 1 %}
+            <td>
+                <form method="POST" action="{{url_for('updateProfile')}}">
+                    <input type="text" id="newFirstName" name="newFirstName">
+                    <input type="hidden" id="newfnUserID" name="newfnUserID" value="{{account['ID']}}">
+                    <input class="submit" type="submit" value="Update">
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+
+        <tr>
+            <td>Middle Initial:</td>
+            <td>{{ account2['middle_initial'] }}</td>
+            <td>
+                <form method="POST" action="{{url_for('editProfile')}}">
+                    <input type="hidden" id="middle_initial" name="middle_initial" value="{{account2['middle_initial']}}">
+                    <input type="hidden" id="muserID" name="muserID" value="{{account['ID']}}">
+                    <input class="submit" type="submit" value="Change Middle Initial">
+                </form>
+            </td>
+            {% if middle_initial == 1 %}
+            <td>
+                <form method="POST" action="{{url_for('updateProfile')}}">
+                    <input type="text" id="newMiddleInitial" name="newMiddleInitial">
+                    <input type="hidden" id="newmUserID" name="newmUserID" value="{{account['ID']}}">
+                    <input class="submit" type="submit" value="Update">
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+
+        <tr>
+            <td>Last Name:</td>
+            <td>{{ account2['last_name'] }}</td>
+            <td>
+                <form method="POST" action="{{url_for('editProfile')}}">
+                    <input type="hidden" id="last_name" name="last_name" value="{{account2['last_name']}}">
+                    <input type="hidden" id="lnuserID" name="lnuserID" value="{{account['ID']}}">
+                    <input class="submit" type="submit" value="Change Last Name">
+                </form>
+            </td>
+            {% if last_name == 1 %}
+            <td>
+                <form method="POST" action="{{url_for('updateProfile')}}">
+                    <input type="text" id="newLastName" name="newLastName">
+                    <input type="hidden" id="newlnUserID" name="newlnUserID" value="{{account['ID']}}">
+                    <input class="submit" type="submit" value="Update">
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+
+        <tr>
             <td>Username:</td>
             <td>{{ account['username'] }}</td>
             <td>
@@ -49,9 +112,7 @@
             </td>
             {% endif %}
         </tr>
-        <tr>
 
-        </tr>
 
         <tr>
             <td>Password:</td>
